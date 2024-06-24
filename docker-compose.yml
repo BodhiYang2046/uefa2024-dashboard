@@ -1,0 +1,32 @@
+services:
+  web:
+    build: .
+    ports:
+      - "8035:8035"
+    env_file:
+      - .env
+    environment:
+      - FLASK_APP=run.py
+      - FLASK_ENV=development
+    depends_on:
+      - db
+    volumes:
+      - .:/app
+
+  db:
+    image: postgres:13
+    env_file:
+      - .env
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
+      - PGADMIN_DEFAULT_PASSWORD=admin
+    ports:
+      - "8080:80"
+
+volumes:
+  pgdata:
