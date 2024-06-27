@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UEFA Team Standings</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>UEFA Team Standings</h1>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Round</th>
+                    <th>Week</th>
+                    <th>Day</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Home Team</th>
+                    <th>Home xG</th>
+                    <th>Score</th>
+                    <th>Away xG</th>
+                    <th>Away Team</th>
+                    <th>Attendance</th>
+                    <th>Venue</th>
+                    <th>Referee</th>
+                    <th>Match Report</th>
+                    <th>Notes</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for standing in standings %}
+                <tr>
+                    <td>{{ standing.round }}</td>
+                    <td>{{ standing.week }}</td>
+                    <td>{{ standing.day }}</td>
+                    <td>{{ standing.date }}</td>
+                    <td>{{ standing.time }}</td>
+                    <td>{{ standing.home_team }}</td>
+                    <td>{{ standing.home_xg }}</td>
+                    <td>{{ standing.score }}</td>
+                    <td>{{ standing.away_xg }}</td>
+                    <td>{{ standing.away_team }}</td>
+                    <td>{{ standing.attendance }}</td>
+                    <td>{{ standing.venue }}</td>
+                    <td>{{ standing.referee }}</td>
+                    <td>{{ standing.match_report }}</td>
+                    <td>{{ standing.notes }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
