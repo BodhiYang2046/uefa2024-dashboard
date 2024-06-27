@@ -1,9 +1,10 @@
 from flask import Flask
 from flask_migrate import Migrate
-from app.models import db
+from flask_sqlalchemy import SQLAlchemy
 from dotenv import load_dotenv
 import os
 
+db = SQLAlchemy()
 migrate = Migrate()
 load_dotenv()  # This loads the variables from .env
 
@@ -20,9 +21,6 @@ def create_app():
     migrate.init_app(app, db)
 
     # Register Blueprints
-    # from app import routes
-    # app.register_blueprint(routes.bq)
-
     with app.app_context():
         # Import routes here to avoid circular import issues
         from app.routes import main as main_blueprint

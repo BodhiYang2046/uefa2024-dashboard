@@ -1,34 +1,28 @@
-# from flask import Blueprint, render_template, jsonify
-# from app.models import TeamStanding
-
-# main = Blueprint('main', __name__)
-
-# @main.route('/')
-# def index():
-#     return render_template('index.html')
-
-# @main.route('/api/team_stats')
-# def team_stats():
-#     teams = Team.query.all()
-#     stats = [{'name': team.name, 'points': team.points} for team in teams]
-#     return jsonify(stats)
-
-# @main.route('/api/recent_matches')
-# def recent_matches():
-#     matches = Match.query.order_by(Match.date.desc()).limit(5).all()
-#     results = [{'home': match.home_team, 'away': match.away_team, 'score': f"{match.home_score}-{match.away_score}"} for match in matches]
-#     return jsonify(results)
-
-
 from flask import Blueprint, render_template, jsonify, request, redirect, url_for, flash
-from app.models import db, TeamStanding
+from app.models import TeamStandings
+from app.database import db
 
 main = Blueprint('main', __name__)
 
 @main.route('/')
 def index():
-    standings = TeamStanding.query.all()
+    standings = TeamStandings.query.all()
     return render_template('index.html', standings=standings)
+
+@main.route('/api/team-standings', methods=['GET'])
+def team_standings():
+    standings = TeamStandings.query.all()
+    standings_dict = [{
+                    "Date": standing.date,
+                    "Time": standing.time,
+                    "Home Team": standing.home_team,
+                    "Score": standing.score,
+                    "Away Team": standing.away_team,
+                    "Venue": standing.venue,
+                    "Attendance": standing.attendance,
+                    "Referee": standing.referee,
+                    }for standing in standings]
+    return jsonify(standings_dict)
 
 @main.route('/add', methods=['GET', 'POST'])
 def add_standing():
@@ -49,7 +43,7 @@ def add_standing():
         match_report = request.form['match_report']
         notes = request.form.get('notes')
 
-        new_standing = TeamStanding(
+        new_standing = TeamStandings(
             round=round,
             week=week,
             day=day,
@@ -79,7 +73,7 @@ def add_standing():
 
 @main.route('/update/<int:id>', methods=['GET', 'POST'])
 def update_standing(id):
-    standing = TeamStanding.query.get_or_404(id)
+    standing = TeamStandings.query.get_or_404(id)
 
     if request.method == 'POST':
         standing.round = request.form['round']
@@ -109,7 +103,7 @@ def update_standing(id):
 
 @main.route('/delete/<int:id>', methods=['POST'])
 def delete_standing(id):
-    standing = TeamStanding.query.get_or_404(id)
+    standing = TeamStandings.query.get_or_404(id)
 
     try:
         db.session.delete(standing)

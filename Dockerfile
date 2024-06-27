@@ -19,8 +19,5 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy the application files into the container
 COPY . .
 
-# Expose the port the app runs on
-EXPOSE 8080
-
 # Define the entrypoint to be bash
 ENTRYPOINT ["/bin/bash", "-c"]
